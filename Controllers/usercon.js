@@ -8,7 +8,7 @@ let reg=async(req,res)=>{
          res.json({"msg":"User Exists Please Login"})   
         }
         else{
-            let hashpwd=await bcrypt.hash(req.body.pwd,process.env.rot)
+            let hashpwd=await bcrypt.hash(req.body.pwd,10)
             let data=new um(req.body)
             data.pwd=hashpwd
             if(req.body.role=="emp")
