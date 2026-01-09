@@ -26,31 +26,24 @@ let reg=async(req,res)=>{
     }
 }
 
-let login=async(req,res)=>{
-    try{
-        let obj=await um.findById(req.body._id)
-        if(obj){
-            let vpwd=await bcrypt.compare(req.body.pwd,obj.pwd)
-            if(vpwd && obj.status=="accepted")
-            {
-                res.json({"token":jwt.sign({"_id":req.body._id},process.env.secpwd),"_id":obj._id,"role":obj.role,"name":obj.name})
-            }
-            else{
-                if(obj.status!="accepted")
-                    res.json({"msg":"Admin Yet To Accept Your Request"})
-                res.json({"msg":"Check Your Password"})
-            }
-        }
-        else{
-            res.json({"msg":"Check Your Email_ID"})
-        }
+let login = async (req, res) => {
+  try {
+    let obj = await um.findById(req.body._id)
+
+    if (!obj) {
+      return res.json({ msg: "Check Your Email_ID" })
     }
-   catch(err){
-        res.json({"msg":"Couldn't Login Please Try Again"})
-        console.log(err);
-        
-    } 
+
+    if (obj.status !== "accepted") {return res.json({ msg: "Admin Yet To Accept Your Request" })}
+    let vpwd = await bcrypt.compare(req.body.pwd, obj.pwd)
+    if (!vpwd) {return res.json({ msg: "Check Your Password" })}
+    return res.json({token: jwt.sign({ _id: obj._id }, process.env.secpwd),_id: obj._id,role: obj.role,name: obj.name})
+  } catch (err) {
+    console.log(err)
+    return res.json({ msg: "Couldn't Login Please Try Again" })
+  }
 }
+
 
 
 let penemp=async(req,res)=>{
