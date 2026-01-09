@@ -10,5 +10,5 @@ let usersch=new mongoose.Schema({
         default:"pending"
     }
 })
-let um=mongoose.model("user",usersch)
+let um=mongoose.model("ecomusrs",usersch)
 module.exports=um
