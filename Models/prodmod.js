@@ -11,6 +11,7 @@ let prodsch=new mongoose.Schema({
   default: 5
 },
     "img":String,
+    "pubimg":String,
     "cat":String,
     "com":[]
 })
